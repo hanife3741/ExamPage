@@ -1,0 +1,431 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/main.css" rel="stylesheet" />
+    <script src="Scripts/jquery-3.1.1.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#exam").hide();
+            $("#pbar").hide();
+            $("#qnumber").hide();
+            $("#finish").hide();
+            $("#finaly").hide();
+            $("#start").click(function () {
+                $("#start").hide();
+                $("#exam").show();
+                $("#pbar").show();
+                $("#qnumber").show();
+                $("#finish").show();
+                $("#finaly").hide();
+                $("#finish").click(function () {
+                    finish();
+                });
+                function finish() {
+                    $("#exam").hide();
+                    $("#pbar").hide();
+                    $("#finish").hide();
+                    $("#finaly").show();
+
+                };
+                var saniye = 0;
+                var dakika = 10 * 60;
+                var saat = 0 * 3600;
+                var toplam = parseInt(saat) + parseInt(dakika) + parseInt(saniye);
+                //geri sayma fonksiyonuna gönder
+                gerisay(toplam);
+
+                function gerisay(a) {
+                    if (a > 0) {
+
+                        //saniyede bir kez fonksiyonu çalıştır
+                        var yenile = setInterval(function () {
+                            a--;
+                            if (a >= 3600) {
+                                saat = Math.floor(a / 3600);
+                                dakika = Math.floor((a % 3600) / 60);
+                                saniye = (a % 3600) % 60;
+                                sonuc = saat + ' " ' + dakika + ' : ' + saniye;
+                                $("#pbar").html(sonuc);
+                            } else if (a >= 60) {
+                                dakika = Math.floor(a / 60);
+                                saniye = a % 60;
+                                sonuc = dakika + ' dakika ' + saniye + ' saniye kaldı';
+                                $("#pbar").html(sonuc);
+                            } else if (a >= 0) {
+                                sonuc = a + ' saniye kaldı';
+                                $("#pbar").html(sonuc);
+                            }
+                            else {
+                                $("#pbar").html('Süre Bitti...');
+                                finish();
+                                //sıfır (0) olunca dur
+                                if (a == 0) {
+                                    clearInterval(yenile);
+                                }
+                            }
+                            $("#pbar").width(a);
+
+                        }, 1000);
+                    }
+                }
+
+                var e = ["#q1", "#q2", "#q3", "#q4", "#q5", "#q6", "#q7", "#q8", "#q9", "#q10"];
+                var i = 0;
+                var element = e[i];
+
+                $("next")
+                viewquestion(element);
+
+                function hideAllQuestion() {
+                    $(e).each(function (item, element) {
+                        element = e[item];
+                        $(element).hide();
+                    })
+                };
+
+                function viewquestion(element) {
+                    hideAllQuestion()
+                    $(element).slideDown();
+
+                }
+                $("a").click(
+                    function () {
+                        i = parseInt($(this).html()) - 1;
+                        element = e[i];
+                        viewquestion(element);
+                    });
+                $("#prev").click(function () {
+                    i--;
+                    //i = i % 10;
+                    if (i < 0)
+                    { i = 0;}
+                    element = e[i];
+                    viewquestion(element);
+                });
+                $("#next").click(function () {
+                    i++;
+                    //i = i % 10;
+                    if (i > 9)
+                    { i = 9;}
+                    element = e[i];
+                    viewquestion(element);
+                });
+                var answer = [];
+
+                $(":radio").checked(function (item, element) {
+                    var secici = "input[name=" + item + "]:checked";
+                    answer[item] = $(secici).name();
+                });
+                for (var k = 0; k < 10; k++) {
+                    $("#answer").text() += " " + answer[k];
+                }
+
+
+            });
+        });
+
+
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" id="start" class="btn btn-default">Başla</button>
+                <button type="button" id="finish" class="btn btn-default">Bitir</button>
+                
+            </div>
+            <div id="qnumber" class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#">1</a>
+                    </li>
+                    <li>
+                        <a href="#">2</a>
+                    </li>
+                    <li>
+                        <a href="#">3</a>
+                    </li>
+                    <li>
+                        <a href="#">4</a>
+                    </li>
+                    <li>
+                        <a href="#">5</a>
+                    </li>
+                    <li>
+                        <a href="#">6</a>
+                    </li>
+                    <li>
+                        <a href="#">7</a>
+                    </li>
+                    <li>
+                        <a href="#">8</a>
+                    </li>
+                    <li>
+                        <a href="#">9</a>
+                    </li>
+                    <li>
+                        <a href="#">10</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div id="pbar" class="progress">
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar"
+                     aria-valuemin="0" aria-valuemax="100">
+
+                </div>
+            </div>
+        </div>
+        <div id="exam" class="row">
+            <div class="col-md-3 text-center">
+                <button type="button" class="btn btn-lg sidenav" id="prev">
+                    <span class="glyphicons glyphicons-arrow-left"></span>
+                    <
+                </button>
+            </div>
+            <div class="col-md-6 sidenav">
+                <div class="carousel-inner" id="questions" role="listbox">
+                    <div id="q1" class="item">
+                        <pre><code>JavaScript kodları aşağıdaki elementlerden hangisine yazılır?</code>
+</pre>
+                        <div class="radio">
+                            <label><input type="radio" name="1">a)  &lt;js></label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="1">b)  &lt;javascript></label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="1">c)  &lt;scripting></label>
+                        </div>
+                        <div class="radio disabled">
+                            <label><input type="radio" name="1">d)  &lt;script></label>
+                        </div>
+                    </div>
+                    <div id="q2" class="item">
+                        <pre><code>Aşağıdaki paragrafın metnini değiştirmek için yazılmış JavaScript kodlarından hangisi doğrudur?
+&lt;p id="demo">Lorem ipsum dolor sit amet &lt;/p>
+                                </code>
+</pre>
+                        <div class="radio">
+                            <label><input type="radio" name="2">a)  #demo.innerHTML = "Hello World!";</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="2">b)  document.getElement("p").innerHTML = "Hello World!";</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="2">c)  document.getElementById("demo").innerHTML = "Hello World!";</label>
+                        </div>
+                        <div class="radio disabled">
+                            <label><input type="radio" name="2">d)  document.getElementByName("p").innerHTML = "Hello World!";</label>
+                        </div>
+                    </div>
+                    <div id="q3" class="item">
+                        <pre><code>"main.js" isimli JavaScript dosyasını geliştirmekte olduğumuz HTML dosyasına nasıl çağırabiliriz?
+                                </code>
+</pre>
+
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="3">a)  &lt;script name="main.js">
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="3">b)  &lt;script href="main.js"></label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="3">c)  &lt;script src="main.js"></label>
+                        </div>
+                        <div class="radio disabled">
+                            <label><input type="radio" name="3">d)  &lt;script url="main.js"></label>
+                        </div>
+                    </div>
+                    <div id="q4" class="item">
+                        <pre><code>Mesaj kutusunda "Hello World" metnini nasıl yazdırırız?
+                                </code>
+</pre>
+
+                        <div class="radio">
+                            <label><input type="radio" name="optradio">a)  alert.show("Hello World");</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="optradio">b)  messageBox("Hello World");</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="optradio">c)  alert("Hello World");</label>
+                        </div>
+                        <div class="radio disabled">
+                            <label><input type="radio" name="optradio">d)  messageBox.show("Hello World");</label>
+                        </div>
+                    </div>
+                    <div id="q5" class="item">
+                        <pre><code>Fonksiyon nasıl yazılır?
+                                </code>
+</pre>
+
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optradio">a)  function test()
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optradio">b)  function:test()
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optradio">c)  public function = test()
+                            </label>
+                        </div>
+                        <div class="radio disabled">
+                            <label><input type="radio" name="optradio">d)  void function test()</label>
+                        </div>
+                    </div>
+                    <div id="q6" class="item">
+                        <pre><code>JavaScript dilinde test isimli fonksiyon nasıl çağırılır?
+                                </code>
+</pre>
+
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="6">a)  call function test();
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="6">b)  test();
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="6">c)  call myFunction();
+                            </label>
+                        </div>
+                        <div class="radio disabled">
+                            <label><input type="radio" name="6">d)  addEventListener(test);</label>
+                        </div>
+                    </div>
+                    <div id="q7" class="item">
+                        <pre><code>JavaScript'te eşitlik sınayan if karar koşulu nasıl yazılır?
+                                </code>
+</pre>
+
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="7">a)  if (i = 5)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="7">b)  if i = 5 then
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="7">c)  if (i == 5)
+                            </label>
+                        </div>
+                        <div class="radio disabled">
+                            <label><input type="radio" name="7">d)  if i == 5 then</label>
+                        </div>
+                    </div>
+                    <div id="q8" class="item">
+                        <pre><code>JavaScript'te eşitsizliği sınayan karar koşulu nasıl yazılır?
+                                </code>
+</pre>
+
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="8">a)  if (i <> 5)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="8">b)  if (i != 5)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="8">c)  if i =! 5 then
+                            </label>
+                        </div>
+                        <div class="radio disabled">
+                            <label><input type="radio" name="8">d)  if i <> 5</label>
+                        </div>
+                    </div>
+                    <div id="q9" class="item">
+                        <pre><code>7.25 sayısını en yakın tam sayıya nasıl yuvarlarsınız?
+                                </code>
+</pre>
+
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="9">a)  Math.random(7.25)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="9">b)  Math.round(7.25)
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="9">c)  random(7.25)
+                            </label>
+                        </div>
+                        <div class="radio disabled">
+                            <label><input type="radio" name="9">d)  round(7.25)</label>
+                        </div>
+                    </div>
+                    <div id="q10" class="item">
+                        <pre><code>Değişken nasıl tanımlanır?
+                                </code>
+</pre>
+
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="10">a)  string name = "W1 Sınıfı";
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="10">b)  var name = " W1 Sınıfı";";
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="10">c)  variable name = " W1 Sınıfı";";
+                            </label>
+                        </div>
+                        <div class="radio disabled">
+                            <label><input type="radio" name="10">d)  private var name = " W1 Sınıfı";";</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 text-center">
+                <button type="button" class="btn btn-lg sidenav" id="next">
+                    <span class="glyphicons glyphicons-arrow-right"></span>
+                    >
+                </button>
+            </div>
+            <div id="finaly">
+                <p id="answer">sizin yaptıklarınız: </p> <br>
+                <p>olması gereken: a a a a a a a a a a </p>
+            </div>
+        </div>
+        
+    </div>
+
+
+</body>
+
+</html>
